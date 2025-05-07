@@ -1,4 +1,18 @@
 # Library-DB
+
+Run by going to code folder and follow these steps 
+
+Step 1. Install Python
+
+Step 2. Run the following commands to install dependencies:
+    pip3 install PyQt5
+    pip3 install tkinter
+    pip3 install kivy
+
+Step 3: Download Library.db or create Library.db from the LMS.sql file
+
+Step 4. Run python program using 'python Library.py' to open GUI
+
 Project 1: Railway Reservation System
 
 Course: CSE 3330 – Databases
