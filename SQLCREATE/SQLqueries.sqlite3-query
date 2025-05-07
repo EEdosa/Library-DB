@@ -1,0 +1,159 @@
+-- database: ./train.db
+
+-- 2
+SELECT T.Train_Name
+FROM Train T, Booking B, Passenger P
+WHERE P.first_Name = 'James' AND P.last_name = 'Butt' AND P.SSN = B.Passenger_SSN AND B.Train_Number = T.Train_Number;
+
+/* Results
++--------------+
+|  Train_Name  |
++--------------+
+| Golden Arrow |
++--------------+
+*/
+
+-- 3
+SELECT P.first_name, P.last_name
+FROM Train T, Booking B, Passenger P, Train_Status TS
+WHERE TS.TrainDate = 'Sunday' AND TS.TrainName = T.Train_Name AND T.Train_Number = B.Train_Number AND B.Status = 'Booked' AND B.Passenger_SSN =  P.SSN;
+
+/* Results
++------------+-----------+
+| first_Name | last_Name |
++------------+-----------+
+| Kiley      | Caldarera |
+| Fletcher   | Flosi     |
+| Josephine  | Darakjy   |
+| Sage       | Wieser    |
+| Kris       | Marrier   |
+| Graciela   | Ruta      |
++------------+-----------+
+*/
+
+--4 List train name, day and  passenger names on that train.
+SELECT T.Train_Name, TS.TrainDate, P.first_Name, P.last_Name
+FROM Train T, Passenger P, Booking B, Train_Status TS
+WHERE T.Train_Number = B.Train_Number AND B.Passenger_SSN = P.SSN AND T.Train_Name = TS.TrainName;
+
+/* Results
++------------------+-----------+------------+-----------+
+|    Train_Name    | TrainDate | first_Name | last_Name |
++------------------+-----------+------------+-----------+
+| Flying Scottsman | Sunday    | Josephine  | Darakjy   |
+| Golden Arrow     | Tuesday   | Simona     | Morasca   |
+| Golden Arrow     | Tuesday   | Minna      | Amigon    |
+| Golden Arrow     | Tuesday   | James      | Butt      |
+| Golden Arrow     | Tuesday   | Leota      | Dilliard  |
+| Golden Chariot   | Saturday  | Donette    | Foller    |
+| Golden Arrow     | Tuesday   | Mitsue     | Tollner   |
+| Flying Scottsman | Sunday    | Graciela   | Ruta      |
+| Flying Scottsman | Sunday    | Kiley      | Caldarera |
+| Golden Arrow     | Tuesday   | Art        | Venere    |
+| Golden Arrow     | Tuesday   | Gladys     | Rim       |
+| Golden Chariot   | Saturday  | Meaghan    | Garufi    |
+| Golden Arrow     | Tuesday   | Yuki       | Whobrey   |
+| Flying Scottsman | Sunday    | Abel       | Maclead   |
+| Golden Chariot   | Saturday  | Lenna      | Paprocki  |
+| Flying Scottsman | Sunday    | Sage       | Wieser    |
+| Flying Scottsman | Sunday    | Fletcher   | Flosi     |
+| Flying Scottsman | Sunday    | Kris       | Marrier   |
+| Golden Chariot   | Saturday  | Cammy      | Albares   |
+| Flying Scottsman | Sunday    | Mattie     | Poquette  |
+| Golden Chariot   | Saturday  | Mathew     | Alison    |
+| Golden Chariot   | Saturday  | Sarah      | Johnson   |
+| Golden Chariot   | Saturday  | David      | Willson   |
+| Golden Chariot   | Saturday  | Jennifer   | David     |
+| Golden Chariot   | Saturday  | Emily      | Parker    |
+| Golden Chariot   | Saturday  | Michael    | Smith     |
++------------------+-----------+------------+-----------+
+*/
+
+--5
+SELECT TrainName, TrainDate, Premium_Seats_Occupied + Gen_Seats_Occupied AS Number_of_passengers
+FROM Train_Status;
+
+/* Results
++------------------+-----------+----------------------+
+|    TrainName     | TrainDate | Number_of_passengers |
++------------------+-----------+----------------------+
+| Orient Express   | Friday    | 0                    |
+| Flying Scottsman | Sunday    | 6                    |
+| Golden Arrow     | Tuesday   | 7                    |
+| Golden Chariot   | Saturday  | 6                    |
++------------------+-----------+----------------------+
+*/
+
+--6
+SELECT P.first_Name, P.last_Name, P.Address, P.city, P.county, B.Ticket_Type AS Category, B.Status AS Ticket_Status
+FROM Passenger P, Booking B, Train T
+WHERE B.Passenger_SSN = P.SSN AND B.Status = 'Booked' AND T.Train_Name = 'Golden Chariot' AND T.Train_Number = B.Train_Number;
+
+/* Results
++------------+-----------+---------------------+--------------+-------------+----------+---------------+
+| first_Name | last_Name |       Address       |     city     |   county    | Category | Ticket_Status |
++------------+-----------+---------------------+--------------+-------------+----------+---------------+
+| Donette    | Foller    | 34 Center St        | Hamilton     | Butler      | Premium  | Booked        |
+| Lenna      | Paprocki  | 639 Main St         | Anchorage    | Anchorage   | Premium  | Booked        |
+| Cammy      | Albares   | 56 E Morehead St    | Laredo       | Webb        | Premium  | Booked        |
+| Meaghan    | Garufi    | 69734 E Carrillo St | Mc Minnville | Warren      | General  | Booked        |
+| Emily      | Parker    | 1234 Elm Street     | Los Angeles  | Los Angeles | General  | Booked        |
+| Michael    | Smith     | 5678 Oak Avenue     | Chicago      | Cook        | General  | Booked        |
++------------+-----------+---------------------+--------------+-------------+----------+---------------+
+*/
+
+--7
+SELECT P.first_Name, P.last_Name, P.Address, P.city, P.county, T.Train_Name
+FROM Passenger P, Train T, Booking B
+WHERE B.Passenger_SSN = P.SSN AND B.Status = 'WaitL' AND B.Train_Number = T.Train_Number;
+
+/* Results
++------------+-----------+---------------------+---------------+---------------+------------------+
+| first_Name | last_Name |       Address       |     city      |    county     |    Train_Name    |
++------------+-----------+---------------------+---------------+---------------+------------------+
+| Abel       | Maclead   | 37275 St  Rt 17m M  | Middle Island | Suffolk       | Flying Scottsman |
+| Mattie     | Poquette  | 73 State Road 434 E | Phoenix       | Maricopa      | Flying Scottsman |
+| Simona     | Morasca   | 3 Mcauley Dr        | Ashland       | Ashland       | Golden Arrow     |
+| Sarah      | Johnson   | 4321 Maple Lane     | New York      | New York      | Golden Chariot   |
+| David      | Willson   | 7890 Birch Road     | Houston       | Harris        | Golden Chariot   |
+| Jennifer   | David     | 2468 Pine Street    | San Francisco | San Francisco | Golden Chariot   |
+| Mathew     | Alison    | 1357 Cedar Avenue   | Miami         | Dade          | Golden Chariot   |
++------------+-----------+---------------------+---------------+---------------+------------------+
+*/
+
+--8
+SELECT first_Name, last_Name
+FROM Passenger
+WHERE phone2 LIKE '605%'
+ORDER BY first_name DESC;
+
+/* Results
++------------+-----------+
+| first_Name | last_Name |
++------------+-----------+
+| Sage       | Wieser    |
+| Mattie     | Poquette  |
+| Art        | Venere    |
++------------+-----------+
+*/
+
+--9
+SELECT P.first_Name, P.last_Name
+FROM Passenger P, Train T, Train_Status TS, Booking B
+WHERE TS.TrainDate = 'Tuesday' AND TS.TrainName = T.Train_Name AND T.Train_Number = B.Train_Number AND B.Passenger_SSN = P.SSN
+ORDER BY first_Name ASC; 
+
+/* Results
++------------+-----------+
+| first_Name | last_Name |
++------------+-----------+
+| Art        | Venere    |
+| Gladys     | Rim       |
+| James      | Butt      |
+| Leota      | Dilliard  |
+| Minna      | Amigon    |
+| Mitsue     | Tollner   |
+| Simona     | Morasca   |
+| Yuki       | Whobrey   |
++------------+-----------+
+*/
